@@ -57,6 +57,7 @@ runs:
         set -e
         TAG=$(awk '/^version:/{print $2}' "${{ inputs.chart }}/Chart.yaml")
         helm package -d /tmp/"${{ inputs.chart }}" "${{ inputs.chart }}"
+        helm dependency build "${{ inputs.chart }}"
         echo "CHART_FILE=${{ inputs.chart }}-${TAG}" >> "$GITHUB_ENV"
         echo "CHART_PACKAGE_PATH=/tmp/${{ inputs.chart }}/${{ inputs.chart }}-${TAG}.tgz" >> "$GITHUB_ENV"
 
