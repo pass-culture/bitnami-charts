@@ -28,8 +28,8 @@ jobs:
           dir_names_max_depth: 1
           json: true
           files_yaml: |
-            bitnami/clickhouse
-            bitnami/postgresql
+            bitnami/clickhouse/**
+            bitnami/postgresql/**
           files_ignore: |
             .github/**
             README.md
