@@ -41,7 +41,7 @@ jobs:
     name: Build chart package
     runs-on: ubuntu-22.04
     outputs:
-      chart_name: ${{ steps.generate-name.outputs.chart_name}}
+      chart-name: ${{ steps.generate-name.outputs.CHART_NAME}}
     permissions:
       id-token: write
       contents: read
@@ -65,7 +65,8 @@ jobs:
         id: generate-name
         run: |
           chart_name=${{ matrix.chart }}
-          echo "chart_name=${chart_name////_}" >> $GITHUB_ENV
+          echo "CHART_NAME=${chart_name////_}" >> $GITHUB_ENV
+          echo $CHART_NAME
       - name: Upload chart package artifact
         uses: actions/upload-artifact@v4
         with:
@@ -85,8 +86,8 @@ jobs:
       contents: write
     steps:
       - env:
-          chart_name: ${{needs.build_chart.outputs.chart_name}}
-        run: echo $chart_name
+          CHART_NAME: ${{needs.build_chart.outputs.chart-name}}
+        run: echo "here : $CHART_NAME"
   #     - uses: actions/checkout@v4
   #       with:
   #         fetch-depth: 0
