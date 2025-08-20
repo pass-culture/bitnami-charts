@@ -73,21 +73,21 @@ jobs:
           name: chart-package-${{ env.chart_name }}
           path: /tmp/${{ matrix.chart }}/*.tgz
 
-  # publish_legacy:
-  #   name: Build & publish dev charts (legacy)
-  #   runs-on: ubuntu-22.04
-  #   if: contains(github.event.pull_request.labels.*.name, 'chart-build')
-  #   needs: [find_charts_to_build, build_chart]
-  #   strategy:
-  #     fail-fast: false
-  #     matrix: ${{ fromJSON(needs.find_charts_to_build.outputs.charts_to_build) }}
-  #   permissions:
-  #     id-token: write
-  #     contents: write
-  #   steps:
-  #     - env:
-  #         CHART_NAME: ${{needs.build_chart.outputs.chart-name}}
-  #       run: echo "here : $CHART_NAME"
+  publish_legacy:
+    name: Build & publish dev charts (legacy)
+    runs-on: ubuntu-22.04
+    if: contains(github.event.pull_request.labels.*.name, 'chart-build')
+    needs: [find_charts_to_build, build_chart]
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.find_charts_to_build.outputs.charts_to_build) }}
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - env:
+          CHART_NAME: ${{needs.build_chart.outputs.chart-name}}
+        run: echo "here  $CHART_NAME"
   #     - uses: actions/checkout@v4
   #       with:
   #         fetch-depth: 0
