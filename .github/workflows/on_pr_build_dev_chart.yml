@@ -41,7 +41,7 @@ jobs:
     name: Build chart package
     runs-on: ubuntu-22.04
     outputs:
-      chart_name: ${{ steps.generate_name.outputs.CHART_NAME}}
+      chart_name: ${{ steps.generate_name.outputs.chart_name}}
     permissions:
       id-token: write
       contents: read
@@ -65,11 +65,11 @@ jobs:
         id: generate_name
         run: |
           chart_name=${{ matrix.chart }}
-          echo "CHART_NAME=${chart_name////_}" >> $GITHUB_ENV
+          echo "chart_name=${chart_name////_}" >> $GITHUB_ENV
       - name: Upload chart package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: chart-package-${{ env.CHART_NAME }}
+          name: chart-package-${{ env.chart_name }}
           path: /tmp/${{ matrix.chart }}/*.tgz
 
   publish_legacy:
@@ -85,14 +85,14 @@ jobs:
       contents: write
     steps:
       # - env:
-      #     CHART_NAME: ${{ needs.build_chart.outputs.chart_name}}
+      #     chart_name: ${{needs.build_chart.outputs.chart_name}}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Download chart package artifact
         uses: actions/download-artifact@v4
         with:
-          name: chart-package-${{ needs.build_chart.outputs.chart_name}}
+          name: chart-package-${{needs.build_chart.outputs.chart_name}}
           path: ./chart-package
       - name: Resolve chart package path
         id: resolve_chart_path
@@ -128,7 +128,7 @@ jobs:
       - name: Download chart package artifact
         uses: actions/download-artifact@v4
         with:
-          name: chart-package-${{ needs.build_chart.outputs.chart_name}}
+          name: chart-package-${{needs.build_chart.outputs.chart_name}}
           path: ./chart-package
       - name: Resolve chart package path
         id: resolve_chart_path
