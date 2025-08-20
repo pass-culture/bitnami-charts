@@ -85,7 +85,7 @@ jobs:
       contents: write
     steps:
       - env:
-        CHART_NAME: ${{ needs.build_chart.outputs.chart_name}}
+          CHART_NAME: ${{ needs.build_chart.outputs.chart_name}}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
