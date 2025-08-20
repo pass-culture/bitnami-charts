@@ -40,6 +40,8 @@ jobs:
   build_chart:
     name: Build chart package
     runs-on: ubuntu-22.04
+    outputs:
+      chart_name: ${{ steps.generate_name.output.CHART_NAME}}
     permissions:
       id-token: write
       contents: read
@@ -60,6 +62,7 @@ jobs:
           gcp_infra_service_account: ${{ secrets.GCP_INFRA_SERVICE_ACCOUNT }}
           gcp_infra_workload_identity_provider: ${{ secrets.GCP_INFRA_WORKLOAD_IDENTITY_PROVIDER }}
       - name: Generate file name
+        id: generate_name
         run: |
           chart_name=${{ matrix.chart }}
           echo "CHART_NAME=${chart_name////_}" >> $GITHUB_ENV
@@ -81,6 +84,8 @@ jobs:
       id-token: write
       contents: write
     steps:
+      - env:
+        CHART_NAME: ${{ needs.build_chart.outputs.chart_name}}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
