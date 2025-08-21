@@ -12,6 +12,9 @@ jobs:
   find_charts_to_build:
     name: Find charts to build
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: bitnami
     if: contains(github.event.pull_request.labels.*.name, 'chart-build')
     outputs:
       charts_to_build: ${{ steps.set-matrix.outputs.matrix }}
@@ -26,6 +29,7 @@ jobs:
         with:
           dir_names: true
           dir_names_max_depth: 3
+          dir_names_exclude_current_dir: true
           json: true
           files: |
             bitnami/clickhouse/**
