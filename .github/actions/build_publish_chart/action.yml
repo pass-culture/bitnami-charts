@@ -110,6 +110,8 @@ runs:
       if: inputs.publish == 'true' && (inputs.devel == 'true' || env.PUSH_CHART == 'true' || inputs.chart_package_path)
       run: |
         set -e
+        env
+        find /tmp
         REPO="oci://${{ inputs.gcp_region }}-docker.pkg.dev/${{ inputs.gcp_infra_project }}/${{ inputs.gcp_registry_name }}"
         helm push "${CHART_PACKAGE_PATH}" "$REPO"
 
